@@ -2,13 +2,13 @@ package linked_list
 
 import "fmt"
 
-type LinkedListNode struct {
-	Value int
-	Next  *LinkedListNode
+type Node struct {
+	Val  int
+	Next *Node
 }
 
 type LinkedList struct {
-	Head   *LinkedListNode
+	Head   *Node
 	Length int
 }
 
@@ -20,9 +20,9 @@ func New() *LinkedList {
 }
 
 func (ll *LinkedList) InsertAtBeginning(value int) {
-	newNode := &LinkedListNode{
-		Value: value,
-		Next:  ll.Head,
+	newNode := &Node{
+		Val:  value,
+		Next: ll.Head,
 	}
 
 	ll.Head = newNode
@@ -30,9 +30,9 @@ func (ll *LinkedList) InsertAtBeginning(value int) {
 }
 
 func (ll *LinkedList) InsertAtEnd(value int) {
-	newNode := &LinkedListNode{
-		Value: value,
-		Next:  nil,
+	newNode := &Node{
+		Val:  value,
+		Next: nil,
 	}
 
 	if ll.Head == nil {
@@ -49,6 +49,19 @@ func (ll *LinkedList) InsertAtEnd(value int) {
 	ll.Length++
 }
 
+func (node *Node) Print() {
+	if node == nil {
+		fmt.Println("Empty Node")
+	}
+
+	currentNode := node
+	for currentNode != nil {
+		fmt.Printf("%d->", currentNode.Val)
+		currentNode = currentNode.Next
+	}
+	fmt.Println("nil")
+}
+
 func (ll *LinkedList) Display() {
 	if ll.Head == nil {
 		fmt.Println("Linked List is empty")
@@ -56,7 +69,7 @@ func (ll *LinkedList) Display() {
 
 	currentNode := ll.Head
 	for currentNode != nil {
-		fmt.Printf("%d->", currentNode.Value)
+		fmt.Printf("%d->", currentNode.Val)
 		currentNode = currentNode.Next
 	}
 	fmt.Println("nil")
