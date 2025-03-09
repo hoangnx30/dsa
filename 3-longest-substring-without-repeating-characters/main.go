@@ -41,10 +41,40 @@ func solution2(s string) int {
 	return maxLength
 }
 
+func bruteForce(s string) int {
+	n := len(s)
+	maxLength := 0
+	// Try all possible substrings
+	for start := 0; start < n; start++ {
+		for end := start; end < n; end++ {
+			if hasUniqueChar(s, start, end) {
+				maxLength = max(maxLength, end-start+1)
+			}
+		}
+	}
+
+	return maxLength
+}
+
+// Helper function to check if a substring has all unique characters
+func hasUniqueChar(s string, start int, end int) bool {
+	charMap := make(map[byte]bool)
+
+	for i := start; i <= end; i++ {
+		if charMap[s[i]] {
+			return false
+		}
+		charMap[s[i]] = true
+	}
+
+	return true
+}
+
 func main() {
 	//s := "abcabcbb"
 	s := "abbaack"
 
 	fmt.Println("Solution 1: ", lengthOfLongestSubstring(s))
 	fmt.Println("Solution 2: ", solution2(s))
+	fmt.Println("Solution 3: ", bruteForce(s))
 }
