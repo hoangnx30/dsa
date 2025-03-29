@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// Dynamic programming
 func longestPalindrome(s string) string {
 	if len(s) < 2 {
 		return s
