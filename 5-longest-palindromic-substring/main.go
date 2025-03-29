@@ -37,7 +37,40 @@ func longestPalindrome(s string) string {
 	return maxStr
 }
 
+func expandFromCenter(s string, left int, right int) string {
+	for left >= 0 && right < len(s) && s[left] == s[right] {
+		left--
+		right++
+	}
+
+	return s[left+1 : right]
+}
+
+func longestPalindromeExpandFromCenterSolution(s string) string {
+	maxLength := 0
+	maxStr := s[0:1]
+
+	for i := range s {
+		odd := expandFromCenter(s, i, i)
+		even := expandFromCenter(s, i, i+1)
+		fmt.Println(odd, even)
+
+		if len(odd) > maxLength {
+			maxLength = len(odd)
+			maxStr = odd
+		}
+
+		if len(even) > maxLength {
+			maxLength = len(even)
+			maxStr = even
+		}
+	}
+
+	return maxStr
+}
+
 func main() {
 	str := "babad"
-	fmt.Println(longestPalindrome(str))
+
+	fmt.Println(longestPalindromeExpandFromCenterSolution(str))
 }
