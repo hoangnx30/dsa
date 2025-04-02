@@ -13,8 +13,6 @@ func countDays(days int, meetings [][]int) int {
 		return meetings[i][0] < meetings[j][0]
 	})
 
-	fmt.Println(meetings)
-
 	for index, meeting := range meetings {
 		start := meeting[0]
 		end := meeting[1]
@@ -35,9 +33,29 @@ func countDays(days int, meetings [][]int) int {
 	return result
 }
 
+func countDaysBySubtractingMeetingDays(days int, meetings [][]int) int {
+	prevMeetingDay := 0
+
+	sort.SliceStable(meetings, func(i, j int) bool {
+		return meetings[i][0] < meetings[j][0]
+	})
+
+	for _, meeting := range meetings {
+		start := meeting[0]
+		end := meeting[1]
+
+		start = max(prevMeetingDay+1, start)
+		length := end - start + 1
+		days -= max(length, 0)
+		prevMeetingDay = max(prevMeetingDay, end)
+	}
+
+	return days
+}
+
 func main() {
 	days := 8
 	meetings := [][]int{{3, 4}, {4, 8}, {2, 5}, {3, 8}}
 
-	fmt.Println(countDays(days, meetings))
+	fmt.Println(countDaysBySubtractingMeetingDays(days, meetings))
 }
