@@ -1,45 +1,28 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
-func mergeSort(arr []int) []int {
-	if len(arr) <= 1 {
-		return arr
+func say(s string) {
+	for i := 0; i < 3; i++ {
+		fmt.Println(s)
+		time.Sleep(100 * time.Millisecond) // Give other goroutines a chance to run
 	}
-
-	mid := len(arr) / 2
-
-	left := mergeSort(arr[:mid])
-	right := mergeSort(arr[mid:])
-
-	return merge(left, right)
-}
-
-func merge(left []int, right []int) []int {
-	result := make([]int, 0, len(left)+len(right))
-	leftIndex, rightIndex := 0, 0
-	// [1,5], [3,4]
-
-	for leftIndex < len(left) && rightIndex < len(right) {
-		if left[leftIndex] < right[rightIndex] {
-			result = append(result, left[leftIndex])
-			leftIndex++
-		} else {
-			result = append(result, right[rightIndex])
-			rightIndex++
-		}
-	}
-
-	// Add remaining elements from left array, if any
-	result = append(result, left[leftIndex:]...)
-	// Add remaining elements from right array, if any
-	result = append(result, right[rightIndex:]...)
-
-	return result
 }
 
 func main() {
-	arr := []int{5, 62, 1, 3, 676, 342, 23, 25}
+	// Run say("World") as a goroutine
+	go say("World")
 
-	fmt.Println(mergeSort(arr))
+	// Run say("Hello") in the main goroutine (sequentially)
+	say("Hello")
+
+	fmt.Println("Main function finished.")
+
+	// --- Problem Point (explained below) ---
+	// If we didn't have the say("Hello") call which takes time,
+	// or some other way to wait, the main function might exit
+	// before the "World" goroutine gets a chance to run properly.
 }
