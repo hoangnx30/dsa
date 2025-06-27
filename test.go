@@ -1,28 +1,46 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
-func say(s string) {
-	for i := 0; i < 3; i++ {
-		fmt.Println(s)
-		time.Sleep(100 * time.Millisecond) // Give other goroutines a chance to run
+func findPermutation(s string) []string {
+	var result []string
+	n := len(s)
+	used := make([]bool, n)
+	currentPermutation := make([]rune, 0, n)
+
+	var dfs func()
+	dfs = func() {
+		if len(currentPermutation) == n {
+			result = append(result, string(currentPermutation))
+			return
+		}
+
+		for i := 0; i < n; i++ {
+			if !used[i] {
+				used[i] = true
+				currentPermutation = append(currentPermutation, rune(s[i]))
+
+				dfs()
+
+				currentPermutation = currentPermutation[:len(currentPermutation)-1]
+				used[i] = false
+			}
+		}
+
 	}
+	dfs()
+
+	return result
 }
 
 func main() {
-	// Run say("World") as a goroutine
-	go say("World")
+	inputString := "abca"
+	permutations := findPermutation(inputString)
+	fmt.Printf("Input string: '%s'\n", inputString)
+	fmt.Printf("All permutations: %v\n", permutations)
 
-	// Run say("Hello") in the main goroutine (sequentially)
-	say("Hello")
-
-	fmt.Println("Main function finished.")
-
-	// --- Problem Point (explained below) ---
-	// If we didn't have the say("Hello") call which takes time,
-	// or some other way to wait, the main function might exit
-	// before the "World" goroutine gets a chance to run properly.
+	inputString2 := "ab"
+	permutations2 := findPermutation(inputString2)
+	fmt.Printf("Input string: '%s'\n", inputString2)
+	fmt.Printf("All permutations: %v\n", permutations2)
 }
