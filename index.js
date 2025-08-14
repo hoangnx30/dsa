@@ -1,34 +1,20 @@
-const data = [
-  {
-    "id": "Alice",
-    "followers": ["Bob", "Charlie", "Dave"]
-  },
-  {
-    "id": "Bob",
-    "followers": ["Charlie"]
-  },
-  {
-    "id": "Charlie",
-    "followers": []
-  },
-  {
-    "id": "Dave",
-    "followers": ["Alice", "Bob"]
-  },
-  {
-    "id": "Eva",
-    "followers": ["Bob"]
-  },
-  {
-    "id": "Fiona",
-    "followers": ["Eva"]
-  }
-]
+function minEatingSpeed(piles, h) {
+        let result = 1;
 
-const getNthDegreeFollowers = (id, level) => {
+        while (true) {
+            let time = 0
+            for (const pile of piles) {
+                time += Math.ceil(pile / result)
+            }
 
-}
+            if (time <= h) {
+                break;
+            }
 
-// console.log(getNthDegreeFollowers("Bob", 1)) => ["Charlie"]
-// console.log(getNthDegreeFollowers("Alice", 2)) => ["Bob", "Charlie", "Dave"]
-// console.log(getNthDegreeFollowers("Fiona", 3)) => ["Eva", "Bob", "Charlie"]
+            result++
+        }
+
+        return result
+    }
+
+    console.log(minEatingSpeed([25,10,23,4], 4))
